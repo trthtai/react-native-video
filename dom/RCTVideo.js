@@ -61,7 +61,7 @@ class RCTVideo extends RCTView {
   }
 
   initializeVideoElement() {
-    const elem = document.createElement("video");
+    const elem = document.createElement("audio");
 
     Object.assign(elem.style, {
       display: "block",
