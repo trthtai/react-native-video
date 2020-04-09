@@ -10,7 +10,7 @@ import RCTVideoEvent from "./RCTVideoEvent";
 class RCTVideo extends RCTView {
   playPromise: Promise<void> = Promise.resolve();
   progressTimer: number;
-  videoElement: HTMLVideoElement;
+  videoElement: HTMLAudioElement;
 
   onEnd: boolean = false;
   onLoad: boolean = false;
@@ -154,20 +154,20 @@ class RCTVideo extends RCTView {
       uri = URL.createObjectURL(blob);
     }
 
-    // if (!shaka.Player.isBrowserSupported()) { // primarily iOS WebKit
+    if (!shaka.Player.isBrowserSupported()) { // primarily iOS WebKit
       this.videoElement.setAttribute("src", uri);
       if (!this._paused) {
         this.requestPlay();
       }
-    // } else {
-    //   this.player.load(uri)
-    //     .then(() => {
-    //       if (!this._paused) {
-    //         this.requestPlay();
-    //       }
-    //     })
-    //     .catch(this.onError);
-    // }
+    } else {
+      this.player.load(uri)
+        .then(() => {
+          if (!this._paused) {
+            this.requestPlay();
+          }
+        })
+        .catch(this.onError);
+    }
   }
 
   set volume(value: number) {
